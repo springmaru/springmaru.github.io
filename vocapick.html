@@ -52,7 +52,7 @@ body {
             <div class="btn-group" id = "answerbutton">
                 
                 <button type="button" class="btn btn-primary btn-block" onclick="getRandomword()" id ="Next">다음 단어</button>
-                <button type="button" class="btn btn-primary btn-block" onclick="save_to_array()" id ="Remember_Note">오답노트</button>
+                <button type="button" class="btn btn-primary btn-block" onclick="save_to_array()" id ="Remember_Note">오답노트 추가 / 제거</button>
             </div>
             
             
@@ -294,9 +294,18 @@ function get_local(){
 
 function save_to_array(){
   get_local()
-  _note[current_word] = all_words_list[current_word]
-  localStorage.setItem("odap", JSON.stringify(_note));
-  window.alert("성공적으로 " + current_word + "를 저장했어요 !");
+  if(_note.hasOwnProperty(current_word)){
+    delete _note[current_word]
+
+    localStorage.setItem("odap", JSON.stringify(_note));
+    window.alert("성공적으로 " + current_word + "를 제거했어요!");
+  }
+  else{
+    _note[current_word] = all_words_list[current_word]
+    localStorage.setItem("odap", JSON.stringify(_note));
+    window.alert("성공적으로 " + current_word + "를 저장했어요 !");
+
+  }
 
 }
 
