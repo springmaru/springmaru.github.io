@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="FV.png" rel="shortcut icon" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <title>Random Test</title>
+<style>
+body {
+    font-family: "Noto Sans KR"
+}
+
+</style>
+</head>
+<body onload="getRandomword()">
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="container" data-bs-toggle="tooltip" id="test">
+  <div class="alert alert-success">
+    <strong>공지</strong> 현재 Day01~04, Day 08~09만 업데이트 되어있는 상태입니다 !
+  </div>
+  <div class="alert alert-warning">
+    <strong>버그제보</strong> <a href="https://asked.kr/springmaru">https://asked.kr/springmaru</a>
+
+  </div>
+    <div class="card">
+        <div class="card-header">완자 보카픽 1-10 예문 테스트</div>
+        <div class="card-body" id = "wordname"></div>
+        <div class="card-footer">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="단어를 입력해주세요!" id = "text_input" onkeyup="enterkey()" >
+                <button class="btn btn-success" type="submit" onClick ="isitcorrect()" id = "isittruebutton">확인</button>
+            </div>
+        
+        <div class="d-grid">
+            <div class="btn-group" id = "answerbutton">
+                
+                <button type="button" class="btn btn-primary btn-block" onclick="getRandomword()" id ="Next">다음 단어</button>
+                <button type="button" class="btn btn-primary btn-block" onclick="save_to_array()" id ="Remember_Note">오답노트</button>
+            </div>
+            
+            
+        </div>
+              
+
+        
+        
+    </div>
+    
+</div>
+<br>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+    설정
+  </button>
+
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">단어 설정</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day1</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check2" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day2</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check3" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day3</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check4" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day4</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check5" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day5</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check6" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day6</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check7" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day7</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check8" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day8</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check9" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day9</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="check10" name="option1" value="something" checked>
+            <label class="form-check-label" for="check1">Day10</label>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" onclick="odap_reset()" data-bs-dismiss="modal">오답노트만 플레이하기</button>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick= "reset()" data-bs-dismiss="modal">확인</button>
+        
+      </div>
+
+    </div>
+  </div>
+</div>
+<script>
+// const data = localStorage.getItem("odap")
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+</script>
+
+<!-- 메인 스크립트 -->
+<script>
+
+
+let all_words_list = {};
+
+const raw_1="picture books can serve as an effective tool to ____ children's creativity - promote;The boss is going to ____ her to the position of safety manager - promote;It's impossible to ____ a lot of good ideas without also generating a lot of bad ideas - generate;Even a gentle _______ like fog can result in disaster - phenomenon;Science is a branch of knowledge which is systematic, testable, and ____. - objective;To describe the behavior of an individual, economists start by describing his or her _____. - objectives;____ stress is defined in terms of the transaction between the person and the environment. - psychological;Complex behavior does not ___ complex mental strategies. - imply;____ workers work in a particular place or organization for only short periods of time. - transient;some experiences are states of happiness or sadness; they reflect the _____ highs and lows of everyday life. - transient;rarely does intellect alone ___ romantic acts or heroic deeds. - inspire;A good teacher can ___ hope, ignite the imagination, and instill a love of learning. - inspire;We now know that stress decreases our ____ resources - cognitive;Our website gives information about the ____ to be followed in case of a performance being cancelled - procedure;The ___ man grows lean when his neighbor waxes fat - envious;With ___ eyes Nicholas looked at the cart full of corn - envious;Language is not always reliable for causing ___ meanings to be generated in someone else's mind. - precise;For the physicist, the duration of a ‘second’ is ___ and unambiguous. - precise;Universities are implementing a number of creative approaches to ____ innovation - facilitate;people who have been raised in extreme social ___ are poor at reading emotional cues in those around them. - isloation;A social function of religion is to ___ reflection concerning conduct - prompt;Thank you for your ___ attention in advance - prompt;We have to ___ the natural habitat of endangered species - restore;Requirements that children be vaccinated before they attend school played a central role in reducing ________ of vaccine-preventable diseases. - occurence;Beavers ___ their influence by physically altering the lanscape - exert;To arrive at the ___ decision, they needed to share their privately held information. - optimal;now and then it's good to pause in our _______ of happiness and just be happy. - pursuit;Living your life in _______ of someone else's expectations is a difficult way to live - pursuit;Individual cartel members ___ cooperative strategies by selling more than they should - undermine;If you want to be respected by others, the great thing is to respect yourself. Only by that, only by self-respect will you ___ others to respect you. - compel;She was ______ to carry out her promise - compelled;All students are required to attend a series of seminars on _____ relationships. - interpersonal;In sports, ____ is nearly always with at least one other person. - attendance;By giving yourself freedom to follow your __________________________, you develop your sensitivity to your inner voice. - intuition;When phtography came along, painters were freed to represent things as they were in their imagination, ____ emotion in the color, volume, and line native to the painter's art. - rendering;Armstrong's innovations ____ useless the enormous alternators used for generating power in early radio transmitters - rendered;Don't be ____ by history. Go off and do something wonderful. - encumbered;They were _____ in battle. - vanquished;Desire makes everything blossom; possession makes everything ____ or fade - wither;They finally ____ after the leaves have taken over - wither;These rocks were ____ down by erosion - crumbled;Even purchases that seem simple can quickly turn into a ____ quagmire - cognitive;A glance at the shelves can ___ a whole range of questions. - inspire;Making better decisions when picking out jams or bottles of wine si best done with the emotional brain, which ____ its verdict automatically - generates;"
+const raw_2="Hatchling sea turtles run down the beach to the ocean, a critical ____ in their life cycle. - phase;Many birds build _____ nests entirely instinctively, and may or may hot b conscious of what they are doing - sophisticated;Women are consistently more accurate than men at detecting lying and what the ______ truth is. - underlying;Women are the largest untapped _______ of talent in the world - reservior;We live in a world of intolerance masked as ____. - tolerance;Wherever there is great property, there is great ________ - inequality;____ your mind with great thoughts. To believe in the heroic makes heroes - Nurture;Parents should ___ their children with love - nurture;The best way to ___ the future is to create it - predict;This video now stands at over 96 million views --- a shocking ____ for a thirty-minute video - statistic;When vampire bats return to their communal nests from a successful night's ___, they vomit blood an dshare it with other nest-mates. - foraging;He ____ participants to spend forty minutes either walking in a local nature preserve or walking in an urban area - instructed;We would like to express our deepest gratitude for considering AGL as your ____ provider - insurance;The computer is only fast idiot; it has no imagination; it cannot ____ action. - originate;THe art of painting may have ______ from the human need to comprehend the external world through vision - orginated;Personal beauty is a greater recommendation than any letter of ____. - reference;The cheap prices ____ me to buy things I didn't need - tempted;The government ____ millions of dollars to businesses that are not likely to survive the pandemic - allocated;Human life ____ is increasing rapidly - expectancy;According to an Australian ____ specializing in the heart and diabetes~ - institute;MIT stands for Massachusetts ___ of Technology - institute;Governments ____ programs and policies that deny equal opportunity - institute;_____ motivation is more powerful than extrinsic motivation - Intrinsic;Dogs can ___ another dog and tell where they have been - sniff;It is the enemy you ____ who kills you - underestimate;Personality psychologists ______ the extent __ which the social situation shapes people behavior - underestimated;I would like to confirm that Chris has put in about fify hours of community service and a ____ for his service is enclosed along with the letter for your reference - certificate;Movies may be said to support the ____ culture and to serve as a means for its reproduction over time - dominant;Proscriptive norms state what behavior is _____ or unacceptable - inappropriate;This policy will ______ North Korea to abandon its nuclear weapons program. - induce;___ your friends privately, but praise them openly - Admonish;The elders should not be _____ from families and society - ailenated;Parrots, highly social anials, will engage in ____ behaviors and can severely harm themselves when kept alone. - bizarre;Police ___ protesters using tear gas - subdued;The strength of a man is to be measured by the power of the feelings he subdues not by the power of those which ____ him. - subdue;The scars and stains of racism are still deeply ____ in the American society. - embeded;One group was ____ to make daily plans for what, where, and when to study - instructed;The researchers ____ that the day-by-day plans would work best - predicted;"
+const raw_3="Barriers tend to ( ) romance. It's called the 'Romeo and Juliet effect'. - intensify;Much of socialization takes place during human interaction, without the deliberate ( ) to impart knowledge or values. - intent;One culture might view love as an indispensable part of marriage; another culture might view love as ( ) to marriage. - irrelevant;Being too thin is just as unhealthy as being ( ). - obese;All children have ( ) to change the world. - potentiality;We can ( ) plastic bags with reusable ones. - substitute;Although talking books offer a solution to people with sight difficulties, they are not a direct ( ) for reading. - substitute;He started his career as a ( ) teacher. - substitute;A word isn't ( ) by itself but is used ambiguously; it is ( ) when one cannot tell from the context what sense is being used. - ambiguous;Imagine how ( ) it would be to always consider all the possible uses for all the familiar objects with which you interact. - demanding;The accommodation sector comprises the largest element of tourist ( ) during a trip. - expenditure;Owners of ( ) dogs should keep their dogs on a leash. - fierce;For a long time, tourism was seen as a huge monster invading the areas of ( ) peoples. - indigenous;Children accustomed to praise seemed to become dependent on praise to ( ) any activity. - initiate;You shouldn't purchase or ( ) illegal software. - install;It's important to learn from your mistakes and then to ( ). - refine;If you give and then ask for something right away in return, youo don't establish a relationship; you carry out a ( ). - transaction;The liar wants to be believed, but lying undermines the foundation for ( ). - credibility;One very important factor in the presuasiveness of a communication concerns the ( ) of the sender of the message. - credibility;As a young boy I was a very ( ) baseball fan. - enthusiastic;Landy was trying to ( ) for the Olympic Games that were to be held in Australia that summer. - qualify;( ) should be protected for the simple reason that they are people. - refugee;Parents are commonly ( ) to grant their grown children equal footing with them as adults. - reluctant;Hotels can generate additional ( ) from food and beverage services. - revenue;You can have an environmentally conscious trip by visiting a zone preserving endangered vegetation since the tourist ( ) goes toward accomplishing the goal. - revenue;Plants can maximize their ability to survive and ( ) in almost any condition. - thrive;Academic ability is not the sole ( ) for admission to the college. - criterion;The new medium of ( ) television adds interactivity and digital code. - interactive;Our greatest human adventure is the evolution of consciousness. We are in this life to enlarge the soul, ( ) the spirit, and light up the brain. - liberate;Financial security can ( ) us from work we do not find meaningful. - liberate;Though this program you can donate money to ( ) family. - needy;We agree that helping ( ) is morally good. - the needy;We humans have a habit of being too smug. The virtue of humility is to live with ( ). - oblivion;Hundreds of people ( )ed shops and set them on fire. - plunder;When commercial capital occupies a position of unquestioned ascendancy, it everywhere constitutes a system of ( ). - plunder;He ( )ed to us on the importance of good health. - preach;We have, in fact, two kinds of morality side by side; one which we ( ) but do not practice, and another which we practice but seldom ( ). - preach;Our team were ( )ed to a minor league. - relegate;"
+const raw_4="Transportation innovations increased our ( ). - mobility;Make your acceptance of human nature as ( ) as possible. - radical;Perfection is impossible; just ( ) to do your best. - strive;All those insert cards with ( ) offers are included in magazines to encourage you to subscribe. - subscription;Man is the only creature that strives to ( ) himself, and yearns for the impossible. - surpass;Spirit is the real and eternal; matter is the unreal and ( ). - temporal;People don't usually think of touch as a ( ) phenomenon, but it is every bit as time-based as it is spatial. - temporal;This is a ( ) matter, not spiritual one. - temporal;What's ( ) today may be virtue, tomorrow. - vice;Most people can bear ( ); but if you wish to know what a man really is given his power. - adversity;We are like chameleons. We take our ( ) and the color of our moral character from those who are around us. - hue;In general, people accept offers where the ( ) compensation is near the amount that they were hoping for. - monetary;In wildness is the ( ) of the world. - preservation;Jim might never ( ) the full use of his right arm. - regain;Heavy rains could carry away soil and plant nutrients, hindering the growth of ( ). - vegetation;We can live without religion and meditation, but we cannot survive without human ( ). - affection;If you follow your ( )s, you will write well and will engage your readers. - affection;Competitive ( ) athletes need just enough body fat to provide fuel and insulate the body. - endurance;Some send ( ) messages directly, whereas others communicate indirectly by sending more implicit messages. - explicit;When traveling into the wilderness, the type of gear you carry can either help or ( ) your efforts. - hinder;People with low self-esteem often see themselves as ( ) or feel like victioms. - inadequate;The inability to ( ) information from long-term memory is forgetting. - retrieve;When you begin to tell a story again that you have retold many times, what you ( ) from memory is the index to the story itself. - retrieve;Part of the ( ) could be monetary, but often times recognition is just as important. - compensation;Don't focus on negative things; focus on the positive, and you will ( ). - flourish;Moving objects eventually stop because of a force called ( ). - friction;Sara sensed that there had been ( ) between her children. - friction;Globalization is the process by which markets ( ) worldwide. - integrate;I have a private life in which I do not permit ( ). - interference;A professional footballer is able to suggest to the coach a new way of practicing an attacking ( ). - maneuver;Bob managed to ( ) expertly into the parking space. - maneuver;Telling the whole truth may be honest, but it can ( ) you. - jeopardize;Early humans did not possess any natural weapons to defend themselves against the dangers ( )ing on the savannas. - lurk;In the past, art photography remained ( ); there were no markets, buyers, or collectors. - marginalize;According to the dress code, pregnant female employees are allowed to wear ( ) dress during the period of their pregnancy. - maternity;My son is so ( ) that I can't take my eyes off him for a moment. - mischievous;"
+const raw_8="The restaurant will offer main dishes from particular _____, such as Mexican or Chinese - cuisine;Human life has a special _____ and value that is worth preserving even at the expenses of self-interest. - dignity;When fake news is repeated, it becomes difficult for the public to _____ what's real. - discern;It is important that farmers _____ their crops to maintain healthy soils. - diversify;Scientists try to _____ knowledge by devising theories. - extract;The Korean Ginseng _____ is bitter but good for health. - extract;The primary perceptual _____ in human beings, as in all primates, is vision. - faculty;A helpful way to create a school in which the _____ works together as a team is to think of employees as volunteers. - faculty;There are well over 150,000 health apps, yet only a tiny _____ can enhance their users' health. - fraction;Researchers want to _____ their findings from the sample in their study to a larger population. - generalize;He was so _____ that she had little difficulty in selling the property to him. - gullible;An _____ virus kills its host. A clever virus stays with it. - inefficient;No one can make you feel _____ without your consent. - inferior;He regarded most men as his social, moral, and intellectual _____ - inferior;As athletes move up the competitive ladder, they become _____ in terms of physical skills. - homogeneous;Children _____ social rules and values through socialization. - internalize;Some theorists consider Utopian political thinking to be a dangerous undertaking, since it has led in the past to _____ of totalitarian violence. - justification;The traffic accident was _____ and tragic. - lethal;Equally evidently a late-acting _____ will be more stable in the gene pool than an early-acting _____ - lethal;Metaphors are _____ in every language and throughout human thought. - pervasive;Always remember that striving and struggle _____ success, even in the dictionary. - precede;As one ages, the hearing loss becomes more _____ - pronounced;Creative people are more _____ to new ideas - receptive;The _____ from the top was well worth it and we stopped to take some pictures. - vista;Faced with increased uncertainty, individuals tend to _____ to the cocoon of family and friends. - retreat;The castle was constructed as a private _____ from public life for Ludwig II of Bavaria. - retreat;The barn owl _____, sometimes with a tremulous effect, often described as shrrreeeee - screech;The _____ was so loud that they had to cover their ears. - screech;Birds of the same species may be migratory in one area, but _____ elsewhere. - sedentary;Being _____ can be a good thing . Being _____ can be a bad thing. It just depends on how you use it. - stubborn;The pilum was a heavy spear, used for _____ or throwing by Roman soldiers. - thrust;The heavier the rocket, the more _____ is needed to get it off the ground. - thrust;There are various pain relief medicines that you can take to _____ the pain that you're feeling. - alleviate;The festival will _____ with an opening ceremony - commence;Her life was an _____ of love and kindness. - exemplar;I tried to _____ the knife from his hand - wrench;Ms. Sebring knew that she had received the horse's cry for help, and she was there to answer that desperate _____ - entreaty;"
+const raw_9="You can't have a physical _____ until you have a spiritual _____ - transformation;Blood _____ is vital for survival of many critically ill patients - transfusion;As the population ages and there are fewer young adults, purchases of big ticket items such as homes, furniture, cars and _____ decrease - appliance;Higher-status individuals can be indifferent while lower-status persons are required to be _____ with their gaze - attentive;_____ experts are urging the more rapid introduction of more efficient jet engines that burn less fuel - aviation;Rhythm and rhyme are potent memory _____ - booster;Music began by serving _____ purposes, of which religious ritual and warfare are to examples - communal;The public may well begin to _____ with the trend - comply;The driver kept a steady pace and didn't _____ until we collided - decelerate;Some discoveries seem to entail numerous phases and discoverers, none of which can be identified as _____ - definitive;Not only did agricultural man add grains and beans to his diet, he began to _____ animals. - domesticate;Superstitions and fears _____ rational judgment. - inhibit;Adolescents have been quick to _____ themselves in technology with most using the Internet to communicate - immerse;By creating new ideas, we can enrich all of us on the planet, while _____ none - impoverish;_____ actions led to trouble, and trouble could have unpleasant consequences - impulsive;Environmental activists try to elevate the priority given to the protection of the environment and its _____ - inhabitant;An Alaskan fisherman, needs a blanket of extra fat to _____ against the cold - insulate;The world is a place that is so _____ that what happens in another part of the world will impact us - interconnected;One particular problem that people sometimes struggle with is avoiding the use of _____ pronouns to refer to both men and women - masculine;The domestication of animals occurred some 10,000 years ago and represented a _____ for the history of human civilization - milestone;Most of us are _____ realists: we tend to believe our culture mirrors a reality shared by everyone - naive;_____ vision is what you see out of the corner of your eyes when looking straight ahead - peripheral;Printers, monitors and keyboards and examples of peripherals - peripheral;Success is never _____, and failure is never final - permanent;Mediterranean Sea, which is warm down to a depth of over 5,000m _____ by deep-sea fishes. - populate;In popular use, positive _____ is often used as a synonym for reward. - reinforcement;I have three kinds of friends: those who love me, those who pay no attention to me, and those who _____ me. - detest;Her natural beauty has always _____ her fans. - allure;I think people hate him because he got _____ credit. - undeserved;The _____ of such a migration must have been small in number and must have traveled comparatively light. - vanguard;The country was ruled by a corrupt _____ for decades. - tyrant;"
+
+
+let test_1=get_voca_info(raw_1)
+let test_2=get_voca_info(raw_2)
+let test_3=get_voca_info(raw_3)
+let test_4=get_voca_info(raw_4)
+let test_5
+let test_6
+let test_7
+let test_8=get_voca_info(raw_8)
+let test_9=get_voca_info(raw_9)
+let test_10
+
+
+
+function get_voca_info(raw){
+  let test={}
+  for (i of raw.split(";")){
+    let imsi=i.split('-')
+    test[String(imsi[0]).trim()] = {"en-meaning":String(imsi[1]).trim()}
+  }
+  return test
+}
+Object.assign(all_words_list, test_1);
+Object.assign(all_words_list, test_2);
+Object.assign(all_words_list, test_3);
+Object.assign(all_words_list, test_4);
+Object.assign(all_words_list, test_5);
+Object.assign(all_words_list, test_6);
+Object.assign(all_words_list, test_7);
+Object.assign(all_words_list, test_8);
+Object.assign(all_words_list, test_9);
+Object.assign(all_words_list, test_10);
+
+
+
+
+
+
+let key_list1 = [];
+let current_word;
+let _note = {};
+
+for(i in all_words_list){
+   key_list1.push(i);
+} 
+
+
+
+a = localStorage.getItem("odap")
+if (a == null){
+  localStorage.setItem("odap", "{}")
+  window.alert("초기 설정을 완료했어요 !")
+}
+
+
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; 
+}
+
+
+function getRandomword(){
+    a = localStorage.getItem("odap")
+    console.log(a);
+    get_local()
+    current_word = key_list1[getRandomInt(0,(key_list1.length))]
+    document.getElementById("wordname").innerHTML = current_word;
+
+    document.getElementById("meaning_title").innerHTML = current_word;
+    
+}
+
+
+function isitcorrect(){
+    let value_input = document.getElementById("text_input");
+    if (-1 != all_words_list[current_word]["en-meaning"].split("  ").indexOf(value_input.value)){ window.alert("맞았습니다!") }
+    else{window.alert("틀렸습니다! 답은 "+all_words_list[current_word]["en-meaning"]+"입니다.")}
+    value_input.value = null; 
+    
+    
+    //asd
+}
+
+function reset(){
+
+    all_words_list = {}
+    for (var i=0;i<=9;i++){
+        if(true==document.getElementById('check'+String(i+1)).checked){
+            Object.assign(all_words_list, eval("test_"+String(i+1)));
+            
+        }
+        
+    }
+
+    key_list1=[]
+    for(i in all_words_list){
+        key_list1.push(i);
+    } 
+    console.log(key_list1)
+    getRandomword()
+
+}
+
+function odap_reset(){
+
+  all_words_list = {}
+  
+  a = localStorage.getItem("odap")
+  Object.assign(all_words_list, JSON.parse(a));
+      
+  
+
+  key_list1=[]
+  for(i in all_words_list){
+      key_list1.push(i);
+  } 
+  console.log(key_list1)
+  getRandomword()
+}
+
+
+
+function enterkey() {
+	if (window.event.keyCode == 13) {
+      isitcorrect()
+      $("#answerbutton").show();
+    }
+}
+function get_local(){
+  _note = JSON.parse(localStorage.getItem("odap"));
+}
+
+function save_to_array(){
+  get_local()
+  _note[current_word] = all_words_list[current_word]
+  localStorage.setItem("odap", JSON.stringify(_note));
+  window.alert("성공적으로 " + current_word + "를 저장했어요 !");
+
+}
+
+
+
+$(document).ready(function(){
+  $("#answerbutton").hide();
+  $("#isittruebutton").click(function(){
+    $("#answerbutton").show();
+  });
+  $("#Next").click(function(){
+    $("#answerbutton").hide();
+  });
+});
+
+
+
+</script>
+</body>
+</html>
